@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Laba_1</string>
+    <string name="splash_screen">COOL</string>
+    <string name="second_part_of_header">Reaction Game</string>
+    <string name="about_creator">Created by Darina Viktorova</string>
+    <string name="action_settings">Settings</string>
+    <!--  Strings for menu  -->
+    <string name="menu">MENU</string>
+    <string name="button_start">START</string>
+    <string name="grid_size">Choose grid size:</string>
+    <string name="timer">Choose timer:</string>
+    <string name="frame_rate">Choose frame rate range"</string>
+    <!--  Strings for game  -->
+    <string name="time_game_left">Time: </string>
+    <string name="score">Score: </string>
+    <string name="zero">0</string>
+</resources>

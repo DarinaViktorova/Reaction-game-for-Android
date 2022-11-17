@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_dark_background"
+    tools:context=".SplashScreenActivity"
+    android:id="@+id/splashScreenLayout">
+
+    <TextView
+        android:id="@+id/textView_header"
+        android:layout_width="313dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="@dimen/dimen_for_splash_margin_start_and_and"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="@dimen/dimen_for_splash_margin_start_and_and"
+        android:text="@string/splash_screen"
+        android:textAlignment="center"
+        android:textColor="@color/purple_200"
+        android:textSize="62sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_second_part_of_header"
+        android:layout_width="313dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_header"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="@dimen/dimen_for_splash_margin_start_and_and"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/dimen_for_splash_margin_start_and_and"
+        android:text="@string/second_part_of_header"
+        android:textAlignment="center"
+        android:textColor="@color/purple_200"
+        android:textSize="@dimen/dimen_text_size" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="244dp"
+        android:layout_height="203dp"
+        android:layout_below="@+id/textView_second_part_of_header"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="@dimen/dimen_logo_center"
+        android:layout_marginTop="58dp"
+        android:layout_marginEnd="@dimen/dimen_logo_center"
+        android:src="@drawable/my_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.355" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="37dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/dimen_for_splash_margin_start_and_and"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="@dimen/dimen_for_splash_margin_start_and_and"
+        android:layout_marginBottom="66dp"
+        android:text="@string/about_creator"
+        android:textAlignment="center"
+        android:textColor="@color/purple_200"
+        android:textSize="@dimen/dimen_text_size" />
+
+</RelativeLayout>
