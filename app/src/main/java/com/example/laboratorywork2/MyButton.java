@@ -1,10 +1,12 @@
-package com.example.reactiongame;
+package com.example.laboratorywork2;
 
 import android.content.Context;
 import androidx.appcompat.widget.AppCompatButton;
 
-public class MyButton extends AppCompatButton {
-    public MyButton(Context context, boolean chosen) {
+public class MyButton extends AppCompatButton
+{
+    public MyButton(Context context, boolean chosen)
+    {
         super(context);
         setChosen(chosen);
     }
