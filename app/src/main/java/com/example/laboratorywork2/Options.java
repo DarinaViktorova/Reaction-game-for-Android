@@ -1,5 +1,4 @@
-package com.example.reactiongame;
-
+package com.example.laboratorywork2;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,6 +20,7 @@ public class Options {
         put("1-1.5 sec", new FrameRateRange(1, 1.5));
         put("0.7-1 sec", new FrameRateRange(0.7, 1));
         put("0.5-0.7 sec", new FrameRateRange(0.5, 0.7));
+        put("0.3-0.6 sec", new FrameRateRange(0.3, 0.6));
     }};
 
     public static class FrameRateRange {

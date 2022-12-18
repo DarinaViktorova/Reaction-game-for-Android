@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/custom_dialog"
-   >
+    >
 
     <TextView
         android:id="@+id/textView"
@@ -12,7 +12,7 @@
         android:gravity="center"
         android:layout_marginHorizontal="@dimen/dimen_padding_horizontal"
         android:textAppearance="@android:style/TextAppearance.Material.Display1"
-         />
+        />
 
     <TextView
         android:id="@+id/startTimer"
@@ -23,5 +23,5 @@
         android:layout_marginBottom="@dimen/dimen_for_padding"
         android:gravity="center"
         android:textAppearance="@android:style/TextAppearance.Material.Display1"
-         />
+        />
 </RelativeLayout>

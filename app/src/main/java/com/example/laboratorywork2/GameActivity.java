@@ -1,32 +1,42 @@
-package com.example.reactiongame;
+package com.example.laboratorywork2;
 
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TableLayout;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
-import com.example.reactiongame.databinding.FragmentSecondBinding;
+import com.example.laboratorywork2.observer.Observer;
+import com.example.laboratorywork2.threads.WriteAndReadWithThreads;
 
-public class SecondFragment extends Fragment {
 
-    private FragmentSecondBinding binding;
-    private TextView gameTimerText;
-    private TextView gamePointsText;
-    private TableLayout tableLayout;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-    private static final String ARG_PARAM1 = "grid";
-    private static final String ARG_PARAM2 = "timer";
-    private static final String ARG_PARAM3 = "range";
+public class GameActivity extends AppCompatActivity implements Observer, Serializable {
+
+    private static final String TAG = GameActivity.class.getSimpleName();
+
+    public static final String ARG_PARAM1 = "grid";
+    public static final String ARG_PARAM2 = "timer";
+    public static final String ARG_PARAM3 = "range";
+
+    transient private TextView gameTimerText;
+    transient private TextView gamePointsText;
+    transient private LinearLayout tableLayout;
+
+    private String gridSize;
+    private String timer;
+    private String frameRates;
 
     private int mGridSize;
     private int mTimer;
@@ -37,36 +47,28 @@ public class SecondFragment extends Fragment {
     private int mPoints = 0;
     boolean mAlreadyClickedCorrect = false;
 
-    CountDownTimer mTimerRound;
+    transient CountDownTimer mTimerRound;
 
+    public GameActivity() {}
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mGridSize = Options.gridSizes.get(getArguments().getString(ARG_PARAM1));
-            mTimer = Options.timers.get(getArguments().getString(ARG_PARAM2));
-            mRangeBegin = Options.frameRates.get(getArguments().getString(ARG_PARAM3)).range_begin;
-            mRangeEnd = Options.frameRates.get(getArguments().getString(ARG_PARAM3)).range_end;
-        }
-    }
 
-    @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
+        setContentView(R.layout.activity_game);
+        gridSize = getIntent().getStringExtra(ARG_PARAM1);
+        timer = getIntent().getStringExtra(ARG_PARAM2);
+        frameRates = getIntent().getStringExtra(ARG_PARAM3);
 
-        binding = FragmentSecondBinding.inflate(inflater, container, false);
-        return binding.getRoot();
 
-    }
+        mGridSize = Options.gridSizes.get(gridSize);
+        mTimer = Options.timers.get(timer);
+        mRangeBegin = Options.frameRates.get(frameRates).range_begin;
+        mRangeEnd = Options.frameRates.get(frameRates).range_end;
 
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        startDialog(view);
-        gameTimerText = view.findViewById(R.id.game_timer);
-        gamePointsText = view.findViewById(R.id.game_points);
-        tableLayout = view.findViewById(R.id.table_layout);
+        startDialog();
+        gameTimerText = findViewById(R.id.game_timer);
+        gamePointsText = findViewById(R.id.game_points);
+        tableLayout = findViewById(R.id.table_linear_layout);
 
         Handler handler = new Handler();
         handler.postDelayed(() -> {
@@ -79,12 +81,22 @@ public class SecondFragment extends Fragment {
                     gameTimerText.setText("Finish!");
                     resetTimer();
                     pointsDialog();
+                    writeToFile();
                 }
             }.start();
             createTable();
             startRound();
         }, 3500);
+
+        findViewById(R.id.go_back_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
 
     public double randomInRange(double begin, double end)
     {
@@ -126,8 +138,7 @@ public class SecondFragment extends Fragment {
 
     private boolean checkResults(MyButton clickedButton)
     {
-        if (clickedButton.isChosen()) recalculatePoints(true);
-        else recalculatePoints(false);
+        recalculatePoints(clickedButton.isChosen());
         gamePointsText.setText(String.valueOf(mPoints));
 
         return clickedButton.isChosen();
@@ -136,7 +147,7 @@ public class SecondFragment extends Fragment {
     private void startRound()
     {
         resetTimer();
-        Integer randomizedIndex = (int)(Math.random() * mGridSize * mGridSize);
+        int randomizedIndex = (int)(Math.random() * mGridSize * mGridSize);
 
         for (int y = 0; y < mGridSize; ++y)
         {
@@ -172,10 +183,7 @@ public class SecondFragment extends Fragment {
                 MyButton button = new MyButton(tableLayout.getContext(), false);
                 button.setOnClickListener((View view) -> {
                     if (!isFinished) {
-                        if (checkResults((MyButton) view))
-                            mAlreadyClickedCorrect = true;
-                        else
-                            mAlreadyClickedCorrect = false;
+                        mAlreadyClickedCorrect = checkResults((MyButton) view);
                         startRound();
                     }
                 });
@@ -186,13 +194,13 @@ public class SecondFragment extends Fragment {
         }
     }
 
-    private void startDialog(@NonNull View view){
+    private void startDialog(){
         LayoutInflater inflater = getLayoutInflater();
-        View layout = inflater.inflate(R.layout.custom_dialog, view.findViewById(R.id.custom_dialog));
+        View layout = inflater.inflate(R.layout.custom_dialog, findViewById(R.id.custom_dialog));
         TextView text = layout.findViewById(R.id.textView);
         text.setText("Game starts in:");
         TextView timer = layout.findViewById(R.id.startTimer);
-        Toast toast = new Toast(view.getContext());
+        Toast toast = new Toast(this);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
@@ -211,19 +219,32 @@ public class SecondFragment extends Fragment {
     }
 
     private void pointsDialog () {
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(this)
                 .setTitle("GAME OVER")
                 .setMessage("Total points: " + mPoints)
                 .setPositiveButton(android.R.string.yes, (dialog, which) ->
-                        NavHostFragment.findNavController(SecondFragment.this)
-                .navigate(R.id.action_from_SecondFragment_to_FirstFragment))
+                        startActivity(new Intent(GameActivity.this, MainActivity.class)))
                 .show();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private String createRecord() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String date = String.valueOf(dtf.format(now));
+        String result = date + "\n\nGrid size: " + gridSize + "\nTimer: " + timer + "\nFrame rate range: " + frameRates + "\nPoints: " + mPoints + "\n\n\n";
+
+        return result;
+    }
+    private void writeToFile() {
+        WriteAndReadWithThreads thread= new WriteAndReadWithThreads();
+        thread.registerObserver(this);
+        String record = createRecord();
+        thread.writeToFile(record);
+        thread.start();
     }
 
+    @Override
+    public void update(String message) {
+        Log.println(Log.INFO,TAG,message);
+    }
 }

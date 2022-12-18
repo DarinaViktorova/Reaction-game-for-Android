@@ -1,25 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/menu"
+        android:layout_width="128dp"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.LaboratoryWork1.AppBarOverlay">
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/dimen_margin_start_and_end_for_menu"
+        android:layout_marginTop="@dimen/dimen_margin_top_for_menu"
+        android:layout_marginEnd="@dimen/dimen_margin_start_and_end_for_menu"
+        android:text="@string/menu"
+        android:textColor="@color/pink"
+        android:textSize="@dimen/dimen_text_size_header_menu" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.LaboratoryWork1.PopupOverlay" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_zero"
+        android:layout_weight="7"
+        android:weightSum="10"
+        android:orientation = "horizontal">
 
-    </com.google.android.material.appbar.AppBarLayout>
+        <Button
+            android:id="@+id/go_button"
+            android:layout_width="@dimen/dimen_zero"
+            android:layout_height="wrap_content"
+            android:layout_weight="4.7"
+            android:layout_marginStart="@dimen/for_start_button"
+            android:layout_marginEnd="@dimen/for_end_button"
+            android:text="@string/button_start" />
 
-    <include layout="@layout/content_main" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <Button
+            android:id="@+id/history_button"
+            android:layout_width="@dimen/dimen_zero"
+            android:layout_height="wrap_content"
+            android:layout_weight="4.7"
+            android:layout_marginStart="@dimen/for_start_button"
+            android:layout_marginEnd="@dimen/for_end_button"
+            android:text="@string/button_history" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_zero"
+        android:layout_weight="6"
+        android:padding="@dimen/dimen_for_padding"
+        android:text="@string/grid_size"
+        android:textColor="@color/pink"
+        android:textSize="@dimen/dimen_text_size"
+        />
+
+    <Spinner
+        android:id="@+id/gridSizeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_zero"
+        android:layout_weight="4" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_zero"
+        android:layout_weight="6"
+        android:padding="@dimen/dimen_for_padding"
+        android:text="@string/timer"
+        android:textColor="@color/pink"
+        android:textSize="@dimen/dimen_text_size"
+        />
+
+    <Spinner
+        android:id="@+id/timerSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_zero"
+        android:layout_weight="6"
+        android:padding="@dimen/dimen_for_padding"
+        android:text="@string/frame_rate"
+        android:textColor="@color/pink"
+        android:textSize="@dimen/dimen_text_size"
+        />
+
+    <Spinner
+        android:id="@+id/frameRateSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_zero"
+        android:layout_weight="4" />
+
+</LinearLayout>
